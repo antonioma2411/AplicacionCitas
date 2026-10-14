@@ -4,12 +4,18 @@
  */
 package com.mycompany.ud1a2_antoniomanuel.vista;
 
+import com.mycompany.ud1a2_antoniomanuel.modelo.Cita;
+import javax.swing.JOptionPane;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author antonioma2411
  */
 public class JFramePrincipal extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFramePrincipal.class.getName());
 
     /**
@@ -17,6 +23,9 @@ public class JFramePrincipal extends javax.swing.JFrame {
      */
     public JFramePrincipal() {
         initComponents();
+
+        ((javax.swing.JSpinner.DefaultEditor) jSpinnerFecha.getEditor()).getTextField().setEditable(false);
+        ((javax.swing.JSpinner.DefaultEditor) jSpinnerHora.getEditor()).getTextField().setEditable(false);
     }
 
     /**
@@ -31,21 +40,20 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jDialog1 = new javax.swing.JDialog();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jTextArea4 = new javax.swing.JTextArea();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jSpinner1 = new javax.swing.JSpinner();
-        jSpinner2 = new javax.swing.JSpinner();
+        jComboBoxMedico = new javax.swing.JComboBox<>();
+        jSpinnerFecha = new javax.swing.JSpinner();
+        jSpinnerHora = new javax.swing.JSpinner();
+        jComboBoxMotivo = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jTextFieldApellido = new javax.swing.JTextField();
+        jTextFieldNombre = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -56,19 +64,13 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
+        jDialog1.setResizable(false);
+
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(8, 112, 33));
         jLabel3.setText("Nombre: ");
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
-
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane3.setViewportView(jTextArea2);
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(8, 112, 33));
@@ -82,10 +84,6 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(8, 112, 33));
         jLabel6.setText("Motivos: ");
 
-        jTextArea4.setColumns(20);
-        jTextArea4.setRows(5);
-        jScrollPane5.setViewportView(jTextArea4);
-
         jLabel7.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(8, 112, 33));
         jLabel7.setText("Fecha");
@@ -98,80 +96,103 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(8, 112, 33));
         jLabel9.setText("Hora");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Selecciona un medico-- ", "Juan Miguel Latasa", "Borja Iglesias", "Mr. Joga" }));
+        jComboBoxMedico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Selecciona un medico-- ", "Juan Miguel Latasa", "Borja Iglesias", "Mr. Joga" }));
 
-        jSpinner1.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, new java.util.Date(), java.util.Calendar.DAY_OF_MONTH));
-        jSpinner1.setEditor(new javax.swing.JSpinner.DateEditor(jSpinner1, "dd/MM/yyyy"));
+        jSpinnerFecha.setModel(new javax.swing.SpinnerDateModel());
+        jSpinnerFecha.setToolTipText("");
+        jSpinnerFecha.setEditor(new javax.swing.JSpinner.DateEditor(jSpinnerFecha, "dd/MM/yyyy"));
 
-        jSpinner2.setModel(new javax.swing.SpinnerDateModel());
-        jSpinner2.setToolTipText("");
-        jSpinner2.setEditor(new javax.swing.JSpinner.DateEditor(jSpinner2, "HH:mm"));
+        jSpinnerHora.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+        jSpinnerHora.setToolTipText("");
+        jSpinnerHora.setEditor(new javax.swing.JSpinner.DateEditor(jSpinnerHora, "HH:mm"));
+
+        jComboBoxMotivo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Selecciona un motivo--", "Cita General", "Analítica", "Recoger Análisis ", "Especialista" }));
+
+        jButton2.setBackground(new java.awt.Color(153, 255, 153));
+        jButton2.setText("Registrar");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+
+        jButton3.setBackground(new java.awt.Color(255, 153, 153));
+        jButton3.setText("Cancelar");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(32, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
+                            .addComponent(jLabel9)
                             .addComponent(jLabel7)
+                            .addComponent(jLabel6)
                             .addComponent(jLabel5)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel9))
+                            .addComponent(jLabel3))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSpinner2)
-                            .addComponent(jSpinner1)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(43, Short.MAX_VALUE)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(36, 36, 36))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jSpinnerFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSpinnerHora, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27))))
         );
+
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jComboBoxMedico, jComboBoxMotivo, jSpinnerFecha, jSpinnerHora, jTextFieldApellido, jTextFieldNombre});
+
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton2, jButton3});
+
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                    .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jComboBoxMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                    .addComponent(jComboBoxMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSpinnerFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(179, 179, 179))
+                    .addComponent(jSpinnerHora, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel3, jScrollPane2});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jComboBoxMedico, jComboBoxMotivo, jSpinnerFecha, jSpinnerHora, jTextFieldApellido, jTextFieldNombre});
 
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel4, jScrollPane3});
-
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel6, jScrollPane5});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton2, jButton3});
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -186,6 +207,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setFocusTraversalPolicyProvider(true);
@@ -198,7 +220,15 @@ public class JFramePrincipal extends javax.swing.JFrame {
             new String [] {
                 "Nombre y Apellidos", "Medico", "Motivo", "Fecha", "Hora"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable1.setFillsViewportHeight(true);
         jTable1.setShowHorizontalLines(true);
         jTable1.setShowVerticalLines(true);
@@ -208,8 +238,15 @@ public class JFramePrincipal extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
+            jTable1.getColumnModel().getColumn(2).setResizable(false);
+            jTable1.getColumnModel().getColumn(3).setResizable(false);
+            jTable1.getColumnModel().getColumn(4).setResizable(false);
+        }
 
-        jButton1.setBackground(new java.awt.Color(255, 186, 186));
+        jButton1.setBackground(new java.awt.Color(255, 153, 153));
         jButton1.setText("Salir");
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
@@ -285,12 +322,12 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
         jDialog1.pack();
-    
-    // 2. Centra la ventana flotante sobre la ventana principal
-    jDialog1.setLocationRelativeTo(this);
-    
-    // 3. Muestra el JDialog en pantalla
-    jDialog1.setVisible(true);
+
+        // 2. Centra la ventana flotante sobre la ventana principal
+        jDialog1.setLocationRelativeTo(this);
+
+        // 3. Muestra el JDialog en pantalla
+        jDialog1.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -300,37 +337,128 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
     private void jTable1ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTable1ComponentResized
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jTable1ComponentResized
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        jDialog1.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new JFramePrincipal().setVisible(true));
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+
+        if (comprobarTexto(jTextFieldNombre, "Nombre")
+                && comprobarTexto(jTextFieldApellido, "Apellido")
+                && comprobarComboBox(jComboBoxMedico, "Médico")
+                && comprobarComboBox(jComboBoxMotivo, "Motivo")
+                && comprobarFecha(jSpinnerFecha, "Fecha")) {
+
+            Cita cita = new Cita(
+                    jTextFieldNombre.getText().trim(),
+                    jTextFieldApellido.getText().trim(),
+                    jComboBoxMedico.getSelectedItem().toString(),
+                    jComboBoxMotivo.getSelectedItem().toString(),
+                    new SimpleDateFormat("dd/MM/yyyy").format(jSpinnerFecha.getValue()),
+                    new SimpleDateFormat("HH:mm").format(jSpinnerFecha.getValue())
+            );
+            
+            crearFila(cita);
+            jDialog1.dispose();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private boolean comprobarTexto(javax.swing.JTextField campo, String nombre) {
+        String texto = campo.getText().trim();
+        String patron = "[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s\\-]+"; //Que compruebe que solo haya letra es decir, que no haya numeros o simbolos, excepto el guion por los apellidos compuestos
+        if (texto.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "ERROR!!! El campo " + nombre + " no puede estar vacío", "ERROR " + nombre + " Vacío", JOptionPane.ERROR_MESSAGE);
+            campo.requestFocus(); // El cursor salta directamente al campo vacío (buscado en la ia)
+            return false;
+
+        } else if (!texto.matches(patron)) {
+            JOptionPane.showMessageDialog(this, "ERROR!!! El campo " + nombre + " no puede ser rellenado por simbolos alfanumericos ni signos excepto: \"-\" ", "ERROR Caracteres no permitidos", JOptionPane.ERROR_MESSAGE);
+            campo.setText("");
+            campo.requestFocus(); // El cursor salta directamente al campo vacío (buscado en la ia)
+            return false;
+
+        }
+        return true;
+
     }
+
+    private boolean comprobarComboBox(javax.swing.JComboBox campo, String nombre) {
+        if (campo.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "ERROR!!! El campo " + nombre + " no tiene selecionado ningun " + nombre + " por favor, seleccione uno", "ERROR " + nombre + " no seleccionado", JOptionPane.ERROR_MESSAGE);
+            campo.requestFocus(); // El cursor salta directamente al campo vacío (buscado en la ia)
+            return false;
+
+        }
+        return true;
+
+    }
+
+    private boolean comprobarFecha(javax.swing.JSpinner campo, String nombre) {
+        Date fechaSeleccionada = (Date) campo.getValue();
+        Date hoy = new Date();
+
+        SimpleDateFormat patron = new SimpleDateFormat("dd/MM/yyyy");
+        String fecha = patron.format(fechaSeleccionada);
+        String hoyStr = patron.format(hoy);
+
+        // Compruebo si es el día de hoy
+        if (fecha.equals(hoyStr)) {
+            JOptionPane.showMessageDialog(this, "ERROR!!! No se puede solicitar cita para el día de hoy, acuda de Urgencia", "ERROR, día no válido", JOptionPane.ERROR_MESSAGE);
+            campo.requestFocus();
+            return false;
+        }
+
+        // Compruebo si es una fecha pasada
+        if (!fechaSeleccionada.after(hoy)) {
+            JOptionPane.showMessageDialog(this, "ERROR!!! Las citas deben ser posteriores al día de hoy", "ERROR, día no válido", JOptionPane.ERROR_MESSAGE);
+            campo.requestFocus();
+            return false;
+        }
+
+        // comparo los años
+        SimpleDateFormat patronAnyo = new SimpleDateFormat("yyyy");
+        int anyoSeleccionado = Integer.parseInt(patronAnyo.format(fechaSeleccionada));
+        int anyoActual = Integer.parseInt(patronAnyo.format(hoy));
+
+        // No se permite seleccionar un año superior al año que viene (año actual + 1)
+        if (anyoSeleccionado > anyoActual + 1) {
+            JOptionPane.showMessageDialog(this, "ERROR!!! La fecha no es válida (no se permite cita a más de un año vista)", "ERROR Alta Cita", JOptionPane.ERROR_MESSAGE);
+            campo.requestFocus();
+            return false;
+        }
+
+        return true; // Pasa todas las comprobaciones
+    }
+
+    private void crearFila(Cita cita) {
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+
+// concatenamos nombre y apellido
+        Object[] fila = new Object[]{
+            cita.getNombre() + " " + cita.getApellido(), //Nombre y Apellidos juntos
+            cita.getMedico(),
+            cita.getMotivo(),
+            cita.getFecha(),
+            cita.getHora()
+        };
+
+// añadimos la fila
+        modelo.addRow(fila);
+
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBoxMedico;
+    private javax.swing.JComboBox<String> jComboBoxMotivo;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -347,14 +475,10 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
+    private javax.swing.JSpinner jSpinnerFecha;
+    private javax.swing.JSpinner jSpinnerHora;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextArea jTextArea4;
+    private javax.swing.JTextField jTextFieldApellido;
+    private javax.swing.JTextField jTextFieldNombre;
     // End of variables declaration//GEN-END:variables
 }
