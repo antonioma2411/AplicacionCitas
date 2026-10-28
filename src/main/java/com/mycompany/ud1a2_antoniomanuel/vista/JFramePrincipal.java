@@ -9,6 +9,9 @@ import javax.swing.JOptionPane;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableModel;
+import com.mycompany.ud1a2_antoniomanuel.modelo.persistencia.CitaDAO;
+import com.mycompany.ud1a2_antoniomanuel.modelo.persistencia.MariaDB.CitaDAOImpl;
+import java.util.List;
 
 /**
  *
@@ -17,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 public class JFramePrincipal extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(JFramePrincipal.class.getName());
+    private final CitaDAO citaDAO = new CitaDAOImpl();
 
     /**
      * Creates new form JFramePrincipal
@@ -26,6 +30,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         ((javax.swing.JSpinner.DefaultEditor) jSpinnerFecha.getEditor()).getTextField().setEditable(false);
         ((javax.swing.JSpinner.DefaultEditor) jSpinnerHora.getEditor()).getTextField().setEditable(false);
+        cargarTabla();
     }
 
     /**
@@ -63,6 +68,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItemBorrar = new javax.swing.JMenuItem();
 
         jDialog1.setResizable(false);
 
@@ -86,7 +92,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(8, 112, 33));
-        jLabel7.setText("Fecha");
+        jLabel7.setText("Fecha:");
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 1, 48)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(8, 112, 33));
@@ -94,7 +100,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(8, 112, 33));
-        jLabel9.setText("Hora");
+        jLabel9.setText("Hora:");
 
         jComboBoxMedico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Selecciona un medico-- ", "Juan Miguel Latasa", "Borja Iglesias", "Mr. Joga" }));
 
@@ -124,13 +130,10 @@ public class JFramePrincipal extends javax.swing.JFrame {
                 .addContainerGap(32, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton2)
-                        .addContainerGap())
+                        .addGap(27, 27, 27))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
@@ -147,7 +150,10 @@ public class JFramePrincipal extends javax.swing.JFrame {
                             .addComponent(jComboBoxMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27))))
+                        .addGap(27, 27, 27))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jComboBoxMedico, jComboBoxMotivo, jSpinnerFecha, jSpinnerHora, jTextFieldApellido, jTextFieldNombre});
@@ -157,17 +163,17 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(15, 15, 15)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jComboBoxMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -175,19 +181,19 @@ public class JFramePrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jComboBoxMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jSpinnerFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
+                .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jSpinnerHora, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addGap(16, 16, 16))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jComboBoxMedico, jComboBoxMotivo, jSpinnerFecha, jSpinnerHora, jTextFieldApellido, jTextFieldNombre});
@@ -212,7 +218,9 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setFocusTraversalPolicyProvider(true);
 
-        jTable1.setBackground(new java.awt.Color(217, 217, 217));
+        jScrollPane1.getViewport().setBackground(new java.awt.Color(217, 217, 217));
+
+        jTable1.setBackground(new java.awt.Color(250, 250, 250));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -229,7 +237,6 @@ public class JFramePrincipal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setFillsViewportHeight(true);
         jTable1.setShowHorizontalLines(true);
         jTable1.setShowVerticalLines(true);
         jTable1.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -252,7 +259,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logo (1).png"))); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Sans Serif Collection", 1, 55)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Sans Serif Collection", 1, 60)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(8, 112, 33));
         jLabel2.setText("Salud Andalucía");
 
@@ -261,35 +268,31 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(48, 48, 48)
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(25, 25, 25)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(38, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(46, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
+                .addGap(33, 33, 33)
                 .addComponent(jButton1)
-                .addContainerGap())
+                .addGap(21, 21, 21))
         );
 
         jMenuBar2.setBackground(new java.awt.Color(242, 242, 242));
@@ -300,6 +303,10 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jMenuItem2.setText("Alta");
         jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
         jMenu2.add(jMenuItem2);
+
+        jMenuItemBorrar.setText("Borrar Tabla");
+        jMenuItemBorrar.addActionListener(this::jMenuItemBorrarActionPerformed);
+        jMenu2.add(jMenuItemBorrar);
 
         jMenuBar2.add(jMenu2);
 
@@ -360,97 +367,143 @@ public class JFramePrincipal extends javax.swing.JFrame {
                     jComboBoxMedico.getSelectedItem().toString(),
                     jComboBoxMotivo.getSelectedItem().toString(),
                     new SimpleDateFormat("dd/MM/yyyy").format(jSpinnerFecha.getValue()),
-                    new SimpleDateFormat("HH:mm").format(jSpinnerFecha.getValue())
+                    new SimpleDateFormat("HH:mm").format(jSpinnerHora.getValue())
             );
-            
-            crearFila(cita);
+
+            citaDAO.create(cita);
+            cargarTabla();
+
+            jTextFieldNombre.setText("");
+            jTextFieldApellido.setText("");
             jDialog1.dispose();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private boolean comprobarTexto(javax.swing.JTextField campo, String nombre) {
-        String texto = campo.getText().trim();
-        String patron = "[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s\\-]+"; //Que compruebe que solo haya letra es decir, que no haya numeros o simbolos, excepto el guion por los apellidos compuestos
-        if (texto.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "ERROR!!! El campo " + nombre + " no puede estar vacío", "ERROR " + nombre + " Vacío", JOptionPane.ERROR_MESSAGE);
-            campo.requestFocus(); // El cursor salta directamente al campo vacío (buscado en la ia)
-            return false;
-
-        } else if (!texto.matches(patron)) {
-            JOptionPane.showMessageDialog(this, "ERROR!!! El campo " + nombre + " no puede ser rellenado por simbolos alfanumericos ni signos excepto: \"-\" ", "ERROR Caracteres no permitidos", JOptionPane.ERROR_MESSAGE);
-            campo.setText("");
-            campo.requestFocus(); // El cursor salta directamente al campo vacío (buscado en la ia)
-            return false;
-
-        }
-        return true;
-
-    }
-
-    private boolean comprobarComboBox(javax.swing.JComboBox campo, String nombre) {
-        if (campo.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "ERROR!!! El campo " + nombre + " no tiene selecionado ningun " + nombre + " por favor, seleccione uno", "ERROR " + nombre + " no seleccionado", JOptionPane.ERROR_MESSAGE);
-            campo.requestFocus(); // El cursor salta directamente al campo vacío (buscado en la ia)
-            return false;
-
-        }
-        return true;
-
-    }
-
-    private boolean comprobarFecha(javax.swing.JSpinner campo, String nombre) {
-        Date fechaSeleccionada = (Date) campo.getValue();
-        Date hoy = new Date();
-
-        SimpleDateFormat patron = new SimpleDateFormat("dd/MM/yyyy");
-        String fecha = patron.format(fechaSeleccionada);
-        String hoyStr = patron.format(hoy);
-
-        // Compruebo si es el día de hoy
-        if (fecha.equals(hoyStr)) {
-            JOptionPane.showMessageDialog(this, "ERROR!!! No se puede solicitar cita para el día de hoy, acuda de Urgencia", "ERROR, día no válido", JOptionPane.ERROR_MESSAGE);
-            campo.requestFocus();
-            return false;
+    private void jMenuItemBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBorrarActionPerformed
+        int fila = jTable1.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Debe seleccionar una fila de la tabla para borrar la cita.",
+                    "Ninguna fila seleccionada",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
-        // Compruebo si es una fecha pasada
-        if (!fechaSeleccionada.after(hoy)) {
-            JOptionPane.showMessageDialog(this, "ERROR!!! Las citas deben ser posteriores al día de hoy", "ERROR, día no válido", JOptionPane.ERROR_MESSAGE);
-            campo.requestFocus();
-            return false;
+        int filaModelo = jTable1.convertRowIndexToModel(fila);
+        Cita citaSeleccionada = (Cita) jTable1.getModel().getValueAt(filaModelo, 0);
+
+        int respuesta = JOptionPane.showConfirmDialog(this,
+                "¿Seguro que desea borrar la cita de " + citaSeleccionada
+                + " del " + citaSeleccionada.getFecha()
+                + " a las " + citaSeleccionada.getHora() + "?",
+                "Confirmar borrado",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            citaDAO.delete(citaSeleccionada.getIdCita());
+            cargarTabla();
+            JOptionPane.showMessageDialog(this, "Cita eliminada correctamente.");
+        }//GEN-LAST:event_jMenuItemBorrarActionPerformed
+    }//GEN-LAST:event_jMenuItemBorrarActionPerformed
+
+        private boolean comprobarTexto(javax.swing.JTextField campo, String nombre) {
+            String texto = campo.getText().trim();
+            String patron = "[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\s\\-]+"; //Que compruebe que solo haya letra es decir, que no haya numeros o simbolos, excepto el guion por los apellidos compuestos
+            if (texto.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "ERROR!!! El campo " + nombre + " no puede estar vacío", "ERROR " + nombre + " Vacío", JOptionPane.ERROR_MESSAGE);
+                campo.requestFocus(); // El cursor salta directamente al campo vacío (buscado en la ia)
+                return false;
+
+            } else if (!texto.matches(patron)) {
+                JOptionPane.showMessageDialog(this, "ERROR!!! El campo " + nombre + " no puede ser rellenado por simbolos alfanumericos ni signos excepto: \"-\" ", "ERROR Caracteres no permitidos", JOptionPane.ERROR_MESSAGE);
+                campo.setText("");
+                campo.requestFocus(); // El cursor salta directamente al campo vacío (buscado en la ia)
+                return false;
+
+            } else if (campo.getText().length() > 120) {
+                JOptionPane.showMessageDialog(this, "ERROR!!! El campo " + nombre + " no puede ser rellenado con más de 120 caracteres", "ERROR Demasiado largo", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            return true;
+
         }
 
-        // comparo los años
-        SimpleDateFormat patronAnyo = new SimpleDateFormat("yyyy");
-        int anyoSeleccionado = Integer.parseInt(patronAnyo.format(fechaSeleccionada));
-        int anyoActual = Integer.parseInt(patronAnyo.format(hoy));
+        private boolean comprobarComboBox(javax.swing.JComboBox campo, String nombre) {
+            if (campo.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(this, "ERROR!!! El campo " + nombre + " no tiene selecionado ningun " + nombre + " por favor, seleccione uno", "ERROR " + nombre + " no seleccionado", JOptionPane.ERROR_MESSAGE);
+                campo.requestFocus(); // El cursor salta directamente al campo vacío (buscado en la ia)
+                return false;
 
-        // No se permite seleccionar un año superior al año que viene (año actual + 1)
-        if (anyoSeleccionado > anyoActual + 1) {
-            JOptionPane.showMessageDialog(this, "ERROR!!! La fecha no es válida (no se permite cita a más de un año vista)", "ERROR Alta Cita", JOptionPane.ERROR_MESSAGE);
-            campo.requestFocus();
-            return false;
+            }
+            return true;
+
         }
 
-        return true; // Pasa todas las comprobaciones
-    }
+        private boolean comprobarFecha(javax.swing.JSpinner campo, String nombre) {
+            Date fechaSeleccionada = (Date) campo.getValue();
+            Date hoy = new Date();
 
-    private void crearFila(Cita cita) {
-        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            SimpleDateFormat patron = new SimpleDateFormat("dd/MM/yyyy");
+            String fecha = patron.format(fechaSeleccionada);
+            String hoyStr = patron.format(hoy);
+
+            // Compruebo si es el día de hoy
+            if (fecha.equals(hoyStr)) {
+                JOptionPane.showMessageDialog(this, "ERROR!!! No se puede solicitar cita para el día de hoy, acuda de Urgencia", "ERROR, día no válido", JOptionPane.ERROR_MESSAGE);
+                campo.requestFocus();
+                return false;
+            }
+
+            // Compruebo si es una fecha pasada
+            if (!fechaSeleccionada.after(hoy)) {
+                JOptionPane.showMessageDialog(this, "ERROR!!! Las citas deben ser posteriores al día de hoy", "ERROR, día no válido", JOptionPane.ERROR_MESSAGE);
+                campo.requestFocus();
+                return false;
+            }
+
+            // comparo los años
+            SimpleDateFormat patronAnyo = new SimpleDateFormat("yyyy");
+            int anyoSeleccionado = Integer.parseInt(patronAnyo.format(fechaSeleccionada));
+            int anyoActual = Integer.parseInt(patronAnyo.format(hoy));
+
+            // No se permite seleccionar un año superior al año que viene (año actual + 1)
+            if (anyoSeleccionado > anyoActual + 1) {
+                JOptionPane.showMessageDialog(this, "ERROR!!! La fecha no es válida (no se permite cita a más de un año vista)", "ERROR Alta Cita", JOptionPane.ERROR_MESSAGE);
+                campo.requestFocus();
+                return false;
+            }
+
+            return true; // Pasa todas las comprobaciones
+        }
+
+        private void crearFila(Cita cita) {
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
 
 // concatenamos nombre y apellido
-        Object[] fila = new Object[]{
-            cita.getNombre() + " " + cita.getApellido(), //Nombre y Apellidos juntos
-            cita.getMedico(),
-            cita.getMotivo(),
-            cita.getFecha(),
-            cita.getHora()
-        };
+            Object[] fila = new Object[]{
+                cita, //Nombre y Apellidos juntos (A traves del to string)(pero pasandole el objeto cita)
+                cita.getMedico(),
+                cita.getMotivo(),
+                cita.getFecha(),
+                cita.getHora()
+            };
 
 // añadimos la fila
-        modelo.addRow(fila);
+            modelo.addRow(fila);
 
-    }
+        }
+
+        private void cargarTabla() {
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            // Vacía la tabla para no duplicar filas
+            modelo.setRowCount(0);
+
+            List<Cita> citas = citaDAO.readAll();
+            for (Cita c : citas) {
+                crearFila(c);
+            }
+        }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -472,6 +525,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItemBorrar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

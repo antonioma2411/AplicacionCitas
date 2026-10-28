@@ -9,6 +9,7 @@ package com.mycompany.ud1a2_antoniomanuel.modelo;
  * @author antonioma2411
  */
 public class Cita {
+    int idCita;
     String nombre;
     String apellido;
     String medico;
@@ -28,6 +29,13 @@ public class Cita {
         this.fecha = fecha;
         this.hora = hora;
     }
+
+    @Override
+    public String toString() {
+       return this.nombre + " " + this.apellido;
+    }
+    
+    
 
     // --- GETTERS Y SETTERS ---
 
@@ -79,4 +87,11 @@ public class Cita {
         this.hora = hora;
     }
     
+    public int getIdCita() {
+        return idCita;
+    }
+
+    public void setIdCita(int idCita) {
+        this.idCita = idCita;
+    }
 }

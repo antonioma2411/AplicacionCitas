@@ -10,4 +10,14 @@
         <maven.compiler.release>26</maven.compiler.release>
         <exec.mainClass>com.mycompany.ud1a2_antoniomanuel.UD1A2_AntonioManuel</exec.mainClass>
     </properties>
+
+    <dependencies>
+        <!-- Source: https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.5.11</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 </project>
